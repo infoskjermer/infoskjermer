@@ -14,10 +14,9 @@ ddev composer require drush/drush
 if [[ "$RESET" == "--reset" ]]; then
   echo "==> Dropping DB (reset)…"
   ddev drush sql:drop -y || true
-fi
-
-# Install if not installed yet (drush status fails to bootstrap fully)
-if ! ddev drush status >/dev/null 2>&1; then
+  echo "==> Installing Drupal…"
+  ddev drush site:install -y --account-name=admin --account-pass=admin
+elif ! ddev drush core:status --field=db-status 2>/dev/null | grep -q "Connected"; then
   echo "==> Installing Drupal…"
   ddev drush site:install -y --account-name=admin --account-pass=admin
 fi
