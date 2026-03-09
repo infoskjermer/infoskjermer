@@ -1,0 +1,4 @@
+fullscreen:
+  css:
+    theme:
+      css/fullscreen.css: {}
