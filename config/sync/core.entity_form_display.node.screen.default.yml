@@ -1,20 +1,17 @@
-uuid: 31779213-e5c6-4115-acbf-68477994e487
+uuid: 8f77aeb2-1e30-4b9d-864c-f824d7126daf
 langcode: en
 status: true
 dependencies:
   config:
-    - field.field.node.screen_content.field_duration
-    - field.field.node.screen_content.field_end_date
-    - field.field.node.screen_content.field_media
-    - field.field.node.screen_content.field_start_date
-    - field.field.node.screen_content.field_status
-    - node.type.screen_content
+    - field.field.node.screen.field_enabled_media
+    - field.field.node.screen.field_location
+    - field.field.node.screen.field_status
+    - node.type.screen
   module:
-    - datetime
     - path
-id: node.screen_content.default
+id: node.screen.default
 targetEntityType: node
-bundle: screen_content
+bundle: screen
 mode: default
 content:
   created:
@@ -23,22 +20,9 @@ content:
     region: content
     settings: {  }
     third_party_settings: {  }
-  field_duration:
-    type: number
-    weight: 127
-    region: content
-    settings:
-      placeholder: ''
-    third_party_settings: {  }
-  field_end_date:
-    type: datetime_default
-    weight: 125
-    region: content
-    settings: {  }
-    third_party_settings: {  }
-  field_media:
+  field_enabled_media:
     type: entity_reference_autocomplete
-    weight: 122
+    weight: 123
     region: content
     settings:
       match_operator: CONTAINS
@@ -46,15 +30,15 @@ content:
       size: 60
       placeholder: ''
     third_party_settings: {  }
-  field_start_date:
-    type: datetime_default
-    weight: 126
+  field_location:
+    type: options_select
+    weight: 121
     region: content
     settings: {  }
     third_party_settings: {  }
   field_status:
     type: boolean_checkbox
-    weight: 123
+    weight: 122
     region: content
     settings:
       display_label: true

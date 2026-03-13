@@ -1,28 +1,28 @@
-uuid: b10599a2-b5fe-4e0e-9e75-83e59625d6d5
+uuid: b9349232-7a81-4443-9a8b-3b5c2da68a2c
 langcode: en
 status: true
 dependencies:
   config:
+    - core.entity_view_mode.media.full
     - field.field.media.image.field_media_image
-    - image.style.large
     - media.type.image
   module:
     - image
 _core:
   default_config_hash: 73xaTNkI5J6sfFcBmNYeuk070X3mQS_iwwWaPYyfG2M
-id: media.image.default
+id: media.image.full
 targetEntityType: media
 bundle: image
-mode: default
+mode: full
 content:
   field_media_image:
     type: image
     label: visually_hidden
     settings:
       image_link: ''
-      image_style: large
+      image_style: ''
       image_loading:
-        attribute: lazy
+        attribute: eager
     third_party_settings: {  }
     weight: 1
     region: content
