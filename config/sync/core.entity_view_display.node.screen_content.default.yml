@@ -6,6 +6,7 @@ dependencies:
     - field.field.node.screen_content.field_duration
     - field.field.node.screen_content.field_end_date
     - field.field.node.screen_content.field_media
+    - field.field.node.screen_content.field_screens
     - field.field.node.screen_content.field_start_date
     - field.field.node.screen_content.field_status
     - node.type.screen_content
@@ -42,6 +43,14 @@ content:
       link: true
     third_party_settings: {  }
     weight: 102
+    region: content
+  field_screens:
+    type: entity_reference_label
+    label: above
+    settings:
+      link: true
+    third_party_settings: {  }
+    weight: 108
     region: content
   field_start_date:
     type: datetime_default

@@ -6,6 +6,7 @@ dependencies:
     - field.field.node.screen_content.field_duration
     - field.field.node.screen_content.field_end_date
     - field.field.node.screen_content.field_media
+    - field.field.node.screen_content.field_screens
     - field.field.node.screen_content.field_start_date
     - field.field.node.screen_content.field_status
     - node.type.screen_content
@@ -39,6 +40,16 @@ content:
   field_media:
     type: entity_reference_autocomplete
     weight: 122
+    region: content
+    settings:
+      match_operator: CONTAINS
+      match_limit: 10
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+  field_screens:
+    type: entity_reference_autocomplete
+    weight: 128
     region: content
     settings:
       match_operator: CONTAINS
