@@ -9,6 +9,7 @@ dependencies:
   module:
     - media_library
     - path
+    - text
 id: node.slide.default
 targetEntityType: node
 bundle: slide
@@ -21,7 +22,7 @@ content:
     settings: {  }
     third_party_settings: {  }
   field_body:
-    type: string_textarea
+    type: text_textarea
     weight: 122
     region: content
     settings:

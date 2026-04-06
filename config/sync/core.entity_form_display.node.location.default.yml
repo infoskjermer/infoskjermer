@@ -5,7 +5,6 @@ dependencies:
   config:
     - field.field.node.location.field_building
     - field.field.node.location.field_city
-    - field.field.node.location.field_display_name
     - field.field.node.location.field_floor
     - field.field.node.location.field_location_status
     - field.field.node.location.field_room
@@ -35,14 +34,6 @@ content:
     weight: 121
     region: content
     settings: {  }
-    third_party_settings: {  }
-  field_display_name:
-    type: string_textfield
-    weight: 127
-    region: content
-    settings:
-      size: 60
-      placeholder: ''
     third_party_settings: {  }
   field_floor:
     type: options_select
