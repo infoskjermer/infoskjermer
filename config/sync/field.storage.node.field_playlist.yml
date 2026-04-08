@@ -1,11 +1,11 @@
-uuid: e439c195-bb18-485c-9b9d-f386c521c7a8
+uuid: 5d6a785a-0225-4ece-ba25-e502d1567aae
 langcode: en
 status: true
 dependencies:
   module:
     - node
-id: node.field_location
-field_name: field_location
+id: node.field_playlist
+field_name: field_playlist
 entity_type: node
 type: entity_reference
 settings:

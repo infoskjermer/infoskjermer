@@ -1,18 +1,18 @@
-uuid: 26918f69-d4e5-457e-ad0c-3cec6f273d9f
+uuid: ca1f4501-95ac-4bba-87a9-4bf00663fb13
 langcode: en
 status: true
 dependencies:
   config:
-    - field.storage.node.field_location
-    - node.type.location
+    - field.storage.node.field_playlist
+    - node.type.playlist
     - node.type.screen
-id: node.screen.field_location
-field_name: field_location
+id: node.screen.field_playlist
+field_name: field_playlist
 entity_type: node
 bundle: screen
-label: Location
-description: ''
-required: true
+label: Playlist
+description: 'which playlist the screen will display'
+required: false
 translatable: false
 default_value: {  }
 default_value_callback: ''
@@ -20,9 +20,9 @@ settings:
   handler: 'default:node'
   handler_settings:
     target_bundles:
-      location: location
+      playlist: playlist
     sort:
-      field: title
+      field: _none
       direction: ASC
     auto_create: false
     auto_create_bundle: ''
