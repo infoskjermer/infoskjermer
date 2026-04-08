@@ -21,7 +21,7 @@ function signage_screen_entity_insert(EntityInterface $entity): void {
     return;
   }
 
-  if (!$entity->get('field_playlist')->isEmpty()) {
+  if (!$entity->get('field_screen_playlist')->isEmpty()) {
     return;
   }
 
@@ -81,7 +81,7 @@ function signage_screen_form_node_screen_edit_form_alter(array &$form, FormState
  * Shared form alterations for Screen add/edit forms.
  */
 function _signage_screen_alter_screen_form(array &$form): void {
-  if (isset($form['field_playlist']['widget'][0]['target_id'])) {
-    $form['field_playlist']['widget'][0]['target_id']['#description'] = t('Optional. If left empty, the system creates a default playlist automatically when the screen is first saved.');
+  if (isset($form['field_screen_playlist']['widget'][0]['target_id'])) {
+    $form['field_screen_playlist']['widget'][0]['target_id']['#description'] = t('Optional. If left empty, the system creates a default playlist automatically when the screen is first saved.');
   }
 }

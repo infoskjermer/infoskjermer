@@ -20,7 +20,7 @@ final class ScreenManager {
       return;
     }
 
-    if (!$screen->get('field_playlist')->isEmpty()) {
+    if (!$screen->get('field_screen_playlist')->isEmpty()) {
       return;
     }
 
@@ -34,7 +34,7 @@ final class ScreenManager {
     ]);
     $playlist->save();
 
-    $screen->set('field_playlist', ['target_id' => $playlist->id()]);
+    $screen->set('field_screen_playlist', ['target_id' => $playlist->id()]);
 
     // Unngå ekstra revision hvis revisions er slått på.
     if (method_exists($screen, 'setNewRevision')) {

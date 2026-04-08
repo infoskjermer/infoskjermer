@@ -30,13 +30,13 @@ final class ScreenOverviewController extends ControllerBase {
     $rows = [];
     foreach ($screens as $screen) {
       $location = '-';
-      if (!$screen->get('field_location')->isEmpty() && $screen->get('field_location')->entity) {
+      if (!$screen->get('field_screen_location')->isEmpty() && $screen->get('field_screen_location')->entity) {
         $location = $screen->get('field_location')->entity->label();
       }
 
       $playlist = '-';
-      if (!$screen->get('field_playlist')->isEmpty() && $screen->get('field_playlist')->entity) {
-        $playlist = $screen->get('field_playlist')->entity->label();
+      if (!$screen->get('field_screen_playlist')->isEmpty() && $screen->get('field_screen_playlist')->entity) {
+        $playlist = $screen->get('field_screen_playlist')->entity->label();
       }
 
       $edit_url = Url::fromRoute('entity.node.edit_form', ['node' => $screen->id()])->toString();
