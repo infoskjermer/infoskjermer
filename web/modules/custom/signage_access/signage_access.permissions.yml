@@ -1,0 +1,4 @@
+administer signage access:
+  title: 'Administer signage screen access'
+  description: 'Grant or revoke user access to screens via the Screen Access Manager.'
+  restrict access: true

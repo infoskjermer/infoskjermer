@@ -1,0 +1,16 @@
+signage_access.admin:
+  path: '/admin/signage/access'
+  defaults:
+    _form: '\Drupal\signage_access\Form\ScreenAccessForm'
+    _title: 'Screen Access Manager'
+  requirements:
+    _permission: 'administer signage access'
+
+signage_access.admin_screen:
+  path: '/admin/signage/access/{node}'
+  defaults:
+    _form: '\Drupal\signage_access\Form\ScreenAccessForm'
+    _title: 'Screen Access Manager'
+  requirements:
+    _permission: 'administer signage access'
+    node: \d+

@@ -1,0 +1,6 @@
+signage_access.admin:
+  title: 'Screen Access Manager'
+  description: 'Grant or revoke user access to specific screens.'
+  route_name: signage_access.admin
+  parent: system.admin_content
+  weight: 10

@@ -1,0 +1,32 @@
+field.storage.node.field_screen_access_users:
+  type: mapping
+  label: 'Screen access users field storage'
+  mapping:
+    langcode:
+      type: string
+    status:
+      type: boolean
+    id:
+      type: string
+    field_name:
+      type: string
+    entity_type:
+      type: string
+    type:
+      type: string
+    settings:
+      type: field.storage_settings.[%parent.type]
+    module:
+      type: string
+    locked:
+      type: boolean
+    cardinality:
+      type: integer
+    translatable:
+      type: boolean
+    indexes:
+      type: sequence
+    persist_with_no_fields:
+      type: boolean
+    custom_storage:
+      type: boolean
