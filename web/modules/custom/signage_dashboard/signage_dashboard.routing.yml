@@ -4,4 +4,4 @@ signage_dashboard.page:
     _controller: '\Drupal\signage_dashboard\Controller\DashboardController::build'
     _title: 'Dashboard'
   requirements:
-    _access: 'TRUE'
+    _user_is_logged_in: 'TRUE'

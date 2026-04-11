@@ -2,3 +2,5 @@ name: 'Signage Dashboard'
 type: module
 core_version_requirement: ^11
 package: Custom
+dependencies:
+  - signage_player
