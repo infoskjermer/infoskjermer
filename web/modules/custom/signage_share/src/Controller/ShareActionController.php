@@ -21,21 +21,25 @@ final class ShareActionController extends ControllerBase {
     );
   }
 
-  public function copy(int $share): RedirectResponse {
-    $newSlideId = $this->shareManager->copySharedSlide($share);
+  public function copy(int $message): RedirectResponse {
+    $newSlideIds = $this->shareManager->copyMessageSlides($message);
 
-    if ($newSlideId) {
-      $this->messenger()->addStatus($this->t('Slide kopiert.'));
-      return $this->redirect('entity.node.edit_form', ['node' => $newSlideId]);
+    if ($newSlideIds) {
+      $this->messenger()->addStatus($this->t('@count slides kopiert til dine slides.', [
+        '@count' => count($newSlideIds),
+      ]));
+    }
+    else {
+      $this->messenger()->addError($this->t('Kunne ikke kopiere slides.'));
     }
 
-    $this->messenger()->addError($this->t('Kunne ikke kopiere slide.'));
     return $this->redirect('signage_dashboard.page');
   }
 
-  public function archive(int $share): RedirectResponse {
-    $this->shareManager->archive($share);
-    $this->messenger()->addStatus($this->t('Melding arkivert.'));
-    return $this->redirect('signage_dashboard.page');
-  }
+  public function archive(int $message): RedirectResponse {
+  $this->shareManager->archive($message);
+  $this->messenger()->addStatus($this->t('Meldingen ble fjernet fra dashboardet.'));
+  return $this->redirect('signage_dashboard.page');
+}
+
 }

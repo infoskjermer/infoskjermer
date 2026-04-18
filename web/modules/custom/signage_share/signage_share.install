@@ -4,16 +4,11 @@
  * Implements hook_schema().
  */
 function signage_share_schema(): array {
-  $schema['signage_share'] = [
-    'description' => 'Stores shared slides between users.',
+  $schema['signage_share_message'] = [
+    'description' => 'Stores shared slide messages between users.',
     'fields' => [
       'id' => [
         'type' => 'serial',
-        'not null' => TRUE,
-        'unsigned' => TRUE,
-      ],
-      'slide_id' => [
-        'type' => 'int',
         'not null' => TRUE,
         'unsigned' => TRUE,
       ],
@@ -47,8 +42,33 @@ function signage_share_schema(): array {
     'primary key' => ['id'],
     'indexes' => [
       'recipient_uid' => ['recipient_uid'],
-      'slide_id' => ['slide_id'],
       'status' => ['status'],
+    ],
+  ];
+
+  $schema['signage_share_message_item'] = [
+    'description' => 'Stores slides that belong to a shared message.',
+    'fields' => [
+      'id' => [
+        'type' => 'serial',
+        'not null' => TRUE,
+        'unsigned' => TRUE,
+      ],
+      'share_message_id' => [
+        'type' => 'int',
+        'not null' => TRUE,
+        'unsigned' => TRUE,
+      ],
+      'slide_id' => [
+        'type' => 'int',
+        'not null' => TRUE,
+        'unsigned' => TRUE,
+      ],
+    ],
+    'primary key' => ['id'],
+    'indexes' => [
+      'share_message_id' => ['share_message_id'],
+      'slide_id' => ['slide_id'],
     ],
   ];
 
