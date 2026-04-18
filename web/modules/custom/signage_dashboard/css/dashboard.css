@@ -277,6 +277,7 @@
 }
 
 .dashboard-media-card__thumb {
+    aspect-ratio: 16 / 9;
     background: #eef2f6;
     overflow: hidden;
     display: flex;
@@ -285,6 +286,7 @@
 }
 
 .dashboard-media-card__thumb img {
+    width: 100%;
     height: 100%;
     object-fit: cover;
     display: block;
