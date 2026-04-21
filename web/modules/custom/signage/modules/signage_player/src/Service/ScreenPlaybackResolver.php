@@ -2,10 +2,10 @@
 
 namespace Drupal\signage_player\Service;
 
+use Drupal\Component\Datetime\TimeInterface;
 use Drupal\Core\Datetime\DrupalDateTime;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\File\FileUrlGeneratorInterface;
-use Drupal\Component\Datetime\TimeInterface;
 use Drupal\media\MediaInterface;
 use Drupal\node\NodeInterface;
 use Drupal\paragraphs\ParagraphInterface;
@@ -29,6 +29,8 @@ class ScreenPlaybackResolver {
         'total_items' => 0,
         'enabled_items' => 0,
         'time_window_items' => 0,
+        'typed_items' => 0,
+        'image_items' => 0,
         'valid_slide_items' => 0,
         'fallback_reason' => null,
       ],
@@ -80,38 +82,43 @@ class ScreenPlaybackResolver {
       if (!$paragraph instanceof ParagraphInterface || $paragraph->bundle() !== 'playlist_item') {
         continue;
       }
-    
+
       $result['status']['total_items']++;
-    
+
       if (!$this->isEnabled($paragraph)) {
         continue;
       }
-    
+
       $result['status']['enabled_items']++;
-    
+
       if (!$this->isActiveNow($paragraph)) {
         continue;
       }
-    
+
       $result['status']['time_window_items']++;
-    
-      $slide = $paragraph->get('field_playlist_slide')->entity ?? null;
-      if (!$slide instanceof NodeInterface || $slide->bundle() !== 'slide') {
+
+      $typed = $this->getTypedParagraph($paragraph);
+      if (!$typed) {
         continue;
       }
-    
+
+      $result['status']['typed_items']++;
+
+      // Only image slides are implemented in this iteration. Text and video
+      // paragraphs are intentionally ignored until their renderers exist.
+      if ($typed->bundle() !== 'image') {
+        continue;
+      }
+
+      $result['status']['image_items']++;
+
+      $item = $this->buildImageItem($paragraph, $typed);
+      if ($item === null) {
+        continue;
+      }
+
       $result['status']['valid_slide_items']++;
-    
-      $items[] = [
-        'slide_id' => (int) $slide->id(),
-        'title' => $slide->label(),
-        'body' => $this->getSlideBody($slide),
-        'media_url' => $this->getSlideMediaUrl($slide),
-        'duration' => $this->getIntegerField($paragraph, 'field_duration_seconds', 10),
-        'order' => $this->getIntegerField($paragraph, 'field_sort_order', 1),
-        'start_at' => $paragraph->get('field_start_at')->value ?? null,
-        'end_at' => $paragraph->get('field_end_at')->value ?? null,
-      ];
+      $items[] = $item;
     }
 
     usort($items, fn(array $a, array $b) => $a['order'] <=> $b['order']);
@@ -120,24 +127,29 @@ class ScreenPlaybackResolver {
     $result['status']['items_found'] = count($items);
 
     if (!$items) {
-      if ($result['status']['total_items'] === 0) {
-        $result['status']['fallback_reason'] = 'playlist_empty';
-      }
-      elseif ($result['status']['enabled_items'] === 0) {
-        $result['status']['fallback_reason'] = 'all_items_disabled';
-      }
-      elseif ($result['status']['time_window_items'] === 0) {
-        $result['status']['fallback_reason'] = 'all_items_outside_schedule';
-      }
-      elseif ($result['status']['valid_slide_items'] === 0) {
-        $result['status']['fallback_reason'] = 'no_valid_slides';
-      }
-      else {
-        $result['status']['fallback_reason'] = 'no_active_items';
-      }
+      $result['status']['fallback_reason'] = $this->inferFallbackReason($result['status']);
     }
 
     return $result;
+  }
+
+  protected function inferFallbackReason(array $status): string {
+    if ($status['total_items'] === 0) {
+      return 'playlist_empty';
+    }
+    if ($status['enabled_items'] === 0) {
+      return 'all_items_disabled';
+    }
+    if ($status['time_window_items'] === 0) {
+      return 'all_items_outside_schedule';
+    }
+    if ($status['typed_items'] === 0) {
+      return 'no_typed_items';
+    }
+    if ($status['image_items'] === 0) {
+      return 'no_image_slides';
+    }
+    return 'no_valid_slides';
   }
 
   protected function isEnabled(ParagraphInterface $item): bool {
@@ -179,8 +191,54 @@ class ScreenPlaybackResolver {
       return null;
     }
 
-    $date = new DrupalDateTime($value, 'UTC');
-    return $date->getTimestamp();
+    try {
+      $date = new DrupalDateTime($value, 'UTC');
+      return $date->getTimestamp();
+    }
+    catch (\Throwable $e) {
+      return null;
+    }
+  }
+
+  protected function getTypedParagraph(ParagraphInterface $item): ?ParagraphInterface {
+    if (!$item->hasField('field_type') || $item->get('field_type')->isEmpty()) {
+      return null;
+    }
+
+    $typed = $item->get('field_type')->entity;
+    return $typed instanceof ParagraphInterface ? $typed : null;
+  }
+
+  protected function buildImageItem(ParagraphInterface $playlistItem, ParagraphInterface $imageParagraph): ?array {
+    if (!$imageParagraph->hasField('field_image') || $imageParagraph->get('field_image')->isEmpty()) {
+      return null;
+    }
+
+    $slide = $imageParagraph->get('field_image')->entity;
+    if (!$slide instanceof NodeInterface || $slide->bundle() !== 'slide') {
+      return null;
+    }
+
+    if ($this->getSlideType($slide) !== 'image') {
+      return null;
+    }
+
+    $mediaUrl = $this->getSlideMediaUrl($slide);
+    if ($mediaUrl === null) {
+      return null;
+    }
+
+    return [
+      'slide_id' => (int) $slide->id(),
+      'type' => 'image',
+      'title' => $slide->label(),
+      'body' => $this->getSlideBody($slide),
+      'media_url' => $mediaUrl,
+      'duration' => $this->getIntegerField($imageParagraph, 'field_duration_seconds', 10),
+      'order' => $this->getIntegerField($playlistItem, 'field_sort_order', 1),
+      'start_at' => $playlistItem->get('field_start_at')->value ?? null,
+      'end_at' => $playlistItem->get('field_end_at')->value ?? null,
+    ];
   }
 
   protected function getIntegerField(ParagraphInterface $item, string $fieldName, int $default): int {
@@ -189,6 +247,14 @@ class ScreenPlaybackResolver {
     }
 
     return max(1, (int) $item->get($fieldName)->value);
+  }
+
+  protected function getSlideType(NodeInterface $slide): ?string {
+    if (!$slide->hasField('field_slide_type') || $slide->get('field_slide_type')->isEmpty()) {
+      return null;
+    }
+
+    return (string) $slide->get('field_slide_type')->value;
   }
 
   protected function getSlideBody(NodeInterface $slide): string {

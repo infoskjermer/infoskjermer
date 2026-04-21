@@ -23,7 +23,7 @@ function signage_player_theme($existing, $type, $theme, $path): array {
   ];
 }
 
-function signage_display_theme_suggestions_page_alter(&$suggestions, $variables) {
+function signage_player_theme_suggestions_page_alter(&$suggestions, $variables) {
   $route_match = \Drupal::routeMatch();
   if ($route_match->getRouteName() === 'signage_player.screen') {
     $suggestions[] = 'page__screen';
@@ -131,29 +131,6 @@ function signage_player_validate_playlist_schedule(array &$form, \Drupal\Core\Fo
             '@item' => $delta + 1,
           ])
         );
-      }
-    }
-
-    if ($paragraph->hasField('field_duration_seconds') && !$paragraph->get('field_duration_seconds')->isEmpty()) {
-      $duration = (int) $paragraph->get('field_duration_seconds')->value;
-
-      if ($duration < 1) {
-        $duration_element = $form['field_playlist_items']['widget'][$delta]['subform']['field_duration_seconds']['widget'][0]['value'] ?? null;
-
-        if (is_array($duration_element)) {
-          $form_state->setError(
-            $duration_element,
-            t('Duration must be at least 1 second.')
-          );
-        }
-        else {
-          $form_state->setErrorByName(
-            'field_playlist_items',
-            t('Playlist item @item must have a duration of at least 1 second.', [
-              '@item' => $delta + 1,
-            ])
-          );
-        }
       }
     }
 

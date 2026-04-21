@@ -39,8 +39,16 @@
               return 'No playlist is connected to this screen.';
             case 'playlist_empty':
               return 'This playlist has no items.';
-            case 'no_active_items':
-              return 'No active slides right now.';
+            case 'all_items_disabled':
+              return 'All playlist items are disabled.';
+            case 'all_items_outside_schedule':
+              return 'No playlist items are scheduled right now.';
+            case 'no_typed_items':
+              return 'No playlist items have a slide selected.';
+            case 'no_image_slides':
+              return 'No image slides to display.';
+            case 'no_valid_slides':
+              return 'No playable slides were found.';
             default:
               return 'Nothing to display.';
           }
