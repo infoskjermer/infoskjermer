@@ -4,6 +4,7 @@ description: 'Manages user access to digital signage screens.'
 package: 'Digital Signage'
 core_version_requirement: ^10 || ^11
 dependencies:
+  - signage
   - drupal:node
   - drupal:user
   - drupal:views

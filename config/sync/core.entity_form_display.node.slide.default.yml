@@ -69,7 +69,7 @@ content:
             grouping: AND
             values_set: 1
             value: ''
-            values: {  }
+            values: "Image\r\nVideo"
             value_form:
               -
                 value: image
@@ -85,10 +85,12 @@ content:
             reset: false
             condition: value
             grouping: AND
-            values_set: 3
+            values_set: 1
             value: ''
             values: "Image\r\nVideo"
-            value_form: {  }
+            value_form:
+              -
+                value: image
             effect: show
             effect_options: {  }
             selector: ''
