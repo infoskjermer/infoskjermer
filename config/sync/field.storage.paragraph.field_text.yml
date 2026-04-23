@@ -1,18 +1,19 @@
-uuid: d2421f00-9495-4c4e-91ec-eb2a00894c9b
+uuid: 6677705f-7230-4d92-8053-a36651f70c91
 langcode: en
 status: true
 dependencies:
   module:
     - node
-id: node.field_screen_playlist
-field_name: field_screen_playlist
-entity_type: node
+    - paragraphs
+id: paragraph.field_text
+field_name: field_text
+entity_type: paragraph
 type: entity_reference
 settings:
   target_type: node
 module: core
 locked: false
-cardinality: -1
+cardinality: 1
 translatable: true
 indexes: {  }
 persist_with_no_fields: false
