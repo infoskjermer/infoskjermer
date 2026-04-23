@@ -1,0 +1,9 @@
+name: 'Signage Player'
+type: module
+core_version_requirement: ^11
+package: 'Digital Signage'
+dependencies:
+  - signage
+  - node
+  - paragraphs
+  - media

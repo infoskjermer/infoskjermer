@@ -1,9 +1,0 @@
-name: 'Signage Access Manager'
-type: module
-description: 'Manages user access to digital signage screens.'
-package: 'Digital Signage'
-core_version_requirement: ^10 || ^11
-dependencies:
-  - drupal:node
-  - drupal:user
-  - drupal:views
